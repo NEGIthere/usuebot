@@ -18,11 +18,11 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 logger = logging.getLogger(__name__)
 
 def start(bot, update):
-    update.message.reply_text('Hi!')
+    update.message.reply_text('Hi!!!')
 
 
 def help(bot, update):
-    update.message.reply_text('Help!')
+    update.message.reply_text('Help!!11')
 
 
 def echo(bot, update):
