@@ -1,8 +1,8 @@
 {
-  "name": "Start on Heroku: Python",
-  "description": "A barebones Python app, which can easily be deployed to Heroku.",
+  "name": "USUE Telegram Bot",
+  "description": "A Telegram bot for students, studying at Ural State University of Economy",
   "image": "heroku/python",
-  "repository": "https://github.com/heroku/python-getting-started",
-  "keywords": ["python", "django" ],
+  "repository": "https://github.com/NEGIthere/usuebot",
+  "keywords": ["python", "telegram", "usue", "django" ],
   "addons": [ "heroku-postgresql" ]
 }
