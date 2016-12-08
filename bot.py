@@ -1,32 +1,95 @@
-"""
-This Bot uses the Updater class to handle the bot.
-First, a few handler functions are defined. Then, those functions are passed to
-the Dispatcher and registered at their respective places.
-Then, the bot is started and runs until we press Ctrl-C on the command line.
-Usage:
-Basic Echobot example, repeats messages.
-Press Ctrl-C on the command line or send a signal to the process to stop the
-bot.
-"""
+from telegram import (ReplyKeyboardMarkup, ReplyKeyboardHide)
+from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, RegexHandler,
+                          ConversationHandler)
 
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 import logging
 
+# Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
 
 logger = logging.getLogger(__name__)
 
+GENDER, PHOTO, LOCATION, BIO = range(4)
+
+
 def start(bot, update):
-    update.message.reply_text('Hi!!!')
+    reply_keyboard = [['Boy', 'Girl', 'Other']]
+
+    update.message.reply_text(
+        'Hi! My name is Professor Bot. I will hold a conversation with you. '
+        'Send /cancel to stop talking to me.\n\n'
+        'Are you a boy or a girl?',
+        reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
+
+    return GENDER
 
 
-def help(bot, update):
-    update.message.reply_text('Help!!11')
+def gender(bot, update):
+    user = update.message.from_user
+    logger.info("Gender of %s: %s" % (user.first_name, update.message.text))
+    update.message.reply_text('I see! Please send me a photo of yourself, '
+                              'so I know what you look like, or send /skip if you don\'t want to.',
+                              reply_markup=ReplyKeyboardHide())
+
+    return PHOTO
 
 
-def echo(bot, update):
-    update.message.reply_text(update.message.text)
+def photo(bot, update):
+    user = update.message.from_user
+    photo_file = bot.getFile(update.message.photo[-1].file_id)
+    photo_file.download('user_photo.jpg')
+    logger.info("Photo of %s: %s" % (user.first_name, 'user_photo.jpg'))
+    update.message.reply_text('Gorgeous! Now, send me your location please, '
+                              'or send /skip if you don\'t want to.')
+
+    return LOCATION
+
+
+def skip_photo(bot, update):
+    user = update.message.from_user
+    logger.info("User %s did not send a photo." % user.first_name)
+    update.message.reply_text('I bet you look great! Now, send me your location please, '
+                              'or send /skip.')
+
+    return LOCATION
+
+
+def location(bot, update):
+    user = update.message.from_user
+    user_location = update.message.location
+    logger.info("Location of %s: %f / %f"
+                % (user.first_name, user_location.latitude, user_location.longitude))
+    update.message.reply_text('Maybe I can visit you sometime! '
+                              'At last, tell me something about yourself.')
+
+    return BIO
+
+
+def skip_location(bot, update):
+    user = update.message.from_user
+    logger.info("User %s did not send a location." % user.first_name)
+    update.message.reply_text('You seem a bit paranoid! '
+                              'At last, tell me something about yourself.')
+
+    return BIO
+
+
+def bio(bot, update):
+    user = update.message.from_user
+    logger.info("Bio of %s: %s" % (user.first_name, update.message.text))
+    update.message.reply_text('Thank you! I hope we can talk again some day.')
+
+    return ConversationHandler.END
+
+
+def cancel(bot, update):
+    user = update.message.from_user
+    logger.info("User %s canceled the conversation." % user.first_name)
+    update.message.reply_text('Bye! I hope we can talk again some day.',
+                              reply_markup=ReplyKeyboardHide())
+
+    return ConversationHandler.END
 
 
 def error(bot, update, error):
@@ -35,17 +98,31 @@ def error(bot, update, error):
 
 def main():
     # Create the EventHandler and pass it your bot's token.
-    updater = Updater("315708415:AAFyAAFCl_IHd19hJbqWxaB65UNilzJsCX4")
+    updater = Updater("TOKEN")
 
     # Get the dispatcher to register handlers
     dp = updater.dispatcher
 
-    # on different commands - answer in Telegram
-    dp.add_handler(CommandHandler("start", start))
-    dp.add_handler(CommandHandler("help", help))
+    # Add conversation handler with the states GENDER, PHOTO, LOCATION and BIO
+    conv_handler = ConversationHandler(
+        entry_points=[CommandHandler('start', start)],
 
-    # on noncommand i.e message - echo the message on Telegram
-    dp.add_handler(MessageHandler(Filters.text, echo))
+        states={
+            GENDER: [RegexHandler('^(Boy|Girl|Other)$', gender)],
+
+            PHOTO: [MessageHandler(Filters.photo, photo),
+                    CommandHandler('skip', skip_photo)],
+
+            LOCATION: [MessageHandler(Filters.location, location),
+                       CommandHandler('skip', skip_location)],
+
+            BIO: [MessageHandler(Filters.text, bio)]
+        },
+
+        fallbacks=[CommandHandler('cancel', cancel)]
+    )
+
+    dp.add_handler(conv_handler)
 
     # log all errors
     dp.add_error_handler(error)
