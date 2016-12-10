@@ -20,7 +20,7 @@
 Вид <select name='RASP' onChange='setSpisok(0)'>  <option value=1 selected>Группы</option>
   <option value=2>Преподаватели</option>
  </select>
- Группа: <input type='text' id='searchClient' autocomplete='off' name='NAMGRP' value='ФК-14-2'><input type='button' value='Показать расписание' onClick='setSpisok(1)'><div class='mainZag'></div><div class='data_today'>11.12.2016</div><table id='main' class='main'><tr class='tek'><td><div id='EmptyResultSet' class='EmptyResultSet'>Занятии на данный период нет</div></table>
+ Группа: <input type='text' id='searchClient' autocomplete='off' name='NAMGRP' value='ЮЭП-14/О ФСП'><input type='button' value='Показать расписание' onClick='setSpisok(1)'><div class='mainZag'></div><div class='data_today'>11.12.2016</div><table id='main' class='main'><tr class='tek'><td><div id='EmptyResultSet' class='EmptyResultSet'>Занятии на данный период нет</div></table>
 </table>
 </form>
 

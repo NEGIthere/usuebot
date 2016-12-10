@@ -57,11 +57,11 @@ subjects = {
             #"Региональное управление и местное самоуправление",
 
         },
-        #"Кафедра экономики предприятий": {
-        #    "Экономика и организация пищевых производств",
-        #    "Экономика предприятий и организаций",
-#
-        #},
+        "Кафедра экономики предприятий": {
+            "Экономика и организация пищевых производств",
+            "Экономика предприятий и организаций": ["ЭП-13-1", "ЭП-13-2", "ЭП-14", "ЭП-14-1 2ВПО (веч)", "ЭП-15", "ЭП-16"]
+
+        },
         #"Кафедра корпоративной экономики и управления бизнесом": {
         #    "Корпоративная экономика и управление бизнесом",
         #},
@@ -246,7 +246,7 @@ def start(bot, update, user_data):
     reply_keyboard.insert(0, ["Назад".decode("utf-8")])
 
     update.message.reply_text(
-        'Выбирите институт.',
+        'Выберите институт.',
         reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=False))
     return INSTITUTE
 
@@ -260,7 +260,7 @@ def institute_choice(bot, update, user_data):
         directions = subjects.get(user_data["institute"])
         reply_keyboard = list([x.decode("utf-8")] for x in directions.keys())
 
-        update.message.reply_text('Выбирите направление.',
+        update.message.reply_text('Выберите направление.',
             reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=False))
         return DIRECTION
 
@@ -269,7 +269,7 @@ def institute_choice(bot, update, user_data):
     reply_keyboard = list([x.decode("utf-8")] for x in cathedrals.keys())
     reply_keyboard.insert(0, ["Назад".decode("utf-8")])
 
-    update.message.reply_text('Выбирите кафедру.',
+    update.message.reply_text('Выберите кафедру.',
         reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=False))
 
     return CATHEDRA
@@ -293,7 +293,7 @@ def cathedra_choice(bot, update, user_data):
     reply_keyboard = list([x.decode("utf-8")] for x in directions.keys())
     reply_keyboard.insert(0, ["Назад".decode("utf-8")])
 
-    update.message.reply_text('Выбирите направление.',
+    update.message.reply_text('Выберите направление.',
         reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=False))
     return DIRECTION
 
@@ -318,7 +318,7 @@ def direction_choice(bot, update, user_data):
     reply_keyboard = list([x.decode("utf-8")] for x in groups)
     reply_keyboard.insert(0, ["Назад".decode("utf-8")])
 
-    update.message.reply_text('Выбирите группу.',
+    update.message.reply_text('Выберите группу.',
         reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=False))
 
     return GROUP
@@ -376,7 +376,7 @@ def back_cathedra(bot, update, user_data):
     reply_keyboard.insert(0, ["Назад".decode("utf-8")])
 
     update.message.reply_text(
-        'Выбирите институт.',
+        'Выберите институт.',
         reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=False))
     return INSTITUTE
 
@@ -389,7 +389,7 @@ def back_direction(bot, update, user_data):
     reply_keyboard = list([x.decode("utf-8")] for x in cathedrals.keys())
     reply_keyboard.insert(0, ["Назад".decode("utf-8")])
 
-    update.message.reply_text('Выбирите кафедру.',
+    update.message.reply_text('Выберите кафедру.',
         reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=False))
 
     return CATHEDRA
@@ -403,7 +403,7 @@ def back_group(bot, update, user_data):
     reply_keyboard = list([x.decode("utf-8")] for x in directions.keys())
     reply_keyboard.insert(0, ["Назад".decode("utf-8")])
 
-    update.message.reply_text('Выбирите направление.',
+    update.message.reply_text('Выберите направление.',
         reply_markup=ReplyKeyboardMarkup(reply_keyboard))
 
     return DIRECTION
