@@ -367,7 +367,7 @@ def createTimetableText(table):
             continue
         timtableText = timtableText + ("  %d. %s - %s, %s, %s\n" % (n + 1, lessonsTime[n], l[0], l[1], l[2]))
     if timtableText == "":
-        return "  Неучебный день"
+        return "  Неучебный день\n"
     return timtableText
 
 def back_cathedra(bot, update, user_data):
@@ -416,10 +416,10 @@ def cancel(bot, update):
     return ConversationHandler.END
 
 def timetable_command(bot, update, user_data):
-    msg = update.message.text.encode("utf-8") # group
+    group = update.message.text[11:].strip().encode("utf-8") # group
 
-    if msg in db_manager.groupNames:
-        sendTimetable(msg, update)
+    if group in db_manager.groupNames:
+        sendTimetable(group, update)
     else:
         update.message.reply_text('Неверное название группы.')
     return
@@ -465,7 +465,7 @@ def main():
     )
 
     dp.add_handler(conv_handler)
-    dp.add_handler(CommandHandler('timetable', timetable_command))
+    dp.add_handler(CommandHandler('timetable', timetable_command, pass_user_data=True))
 
     dp.add_error_handler(error)
 
