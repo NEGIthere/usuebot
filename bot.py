@@ -345,7 +345,7 @@ def sendTimetable(name, update):
     now = datetime.datetime.now()
     tt = db_manager.getTimetable(name)
 
-    if len(tt) == 0:
+    if tt is None or len(tt) == 0:
         update.message.reply_text('Нет расписания.')
         return GROUP
 
@@ -444,7 +444,9 @@ def main():
         entry_points = [CommandHandler('start', start, pass_user_data=True)],
 
         states = {
-            INSTITUTE: [RegexHandler(institutesRegex, institute_choice, pass_user_data=True)],
+            INSTITUTE: [
+                RegexHandler(institutesRegex, institute_choice, pass_user_data=True)
+            ],
             CATHEDRA: [
                 RegexHandler(backRegex, back_cathedra, pass_user_data=True),
                 MessageHandler(Filters.text, cathedra_choice, pass_user_data=True)
@@ -461,7 +463,9 @@ def main():
 
         fallbacks=[
             CommandHandler('cancel', cancel)
-        ]
+        ],
+
+        allow_reentry = True
     )
 
     dp.add_handler(conv_handler)
