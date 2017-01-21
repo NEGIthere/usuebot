@@ -20,15 +20,7 @@
 Вид <select name='RASP' onChange='setSpisok(0)'>  <option value=1 selected>Группы</option>
   <option value=2>Преподаватели</option>
  </select>
- Группа: <input type='text' id='searchClient' autocomplete='off' name='NAMGRP' value='ПИЭ-14-1'><input type='button' value='Показать расписание' onClick='setSpisok(1)'><div class='mainZag'></div><div class='data_today'>21.01.2017</div><div class='container' id='container'>
-<div class='data' id='Data'>
-<table id='main' class='main'><tr class='zag'><td>Пара<td>Время
-<td>Предмет<td>Преподаватель<td>Аудитория<tr class='tek'><td colspan=5><div class='date'>21.01.2017</div>-<div class='day'>Суббота</div><tr><td>1<td>8.30-10.00<td><td><td><tr><td>2<td>10.10-11.40<td><td><td><tr><td>3<td>11.50-13.20<td><td><td><tr><td>4<td>13.50-15.20<td><td><td><tr><td>5<td>15.30-17.00<td><td><td><tr><td>6<td>17.10-18.40<td><td><td><tr><td>7<td>18.50-20.20<td><td><td><tr><td>8<td>20.30-22.00<td><td><td><tr><td colspan=5><div class='date'>22.01.2017</div>-<div class='day'>Воскресенье</div><tr><td>1<td>8.30-10.00<td><td><td><tr><td>2<td>10.10-11.40<td><td><td><tr><td>3<td>11.50-13.20<td><td><td><tr><td>4<td>13.50-15.20<td><td><td><tr><td>5<td>15.30-17.00<td><td><td><tr><td>6<td>17.10-18.40<td><td><td><tr><td>7<td>18.50-20.20<td><td><td><tr><td>8<td>20.30-22.00<td><td><td></table>
-</div>
-<div class='column-headers' id='ColumnHeaders'>
-<table id='colTable' width='100%' height='100%' class='main' cellspacing='0' cellpadding='0'>
-<tr class='zag'><td>Data<td>Para
-</div></div>
+ Группа: <input type='text' id='searchClient' autocomplete='off' name='NAMGRP' value='Т-14'><input type='button' value='Показать расписание' onClick='setSpisok(1)'><div class='mainZag'></div><div class='data_today'>21.01.2017</div><table id='main' class='main'><tr class='tek'><td><div id='EmptyResultSet' class='EmptyResultSet'>Занятии на данный период нет</div></table>
 </table>
 </form>
 
@@ -53,10 +45,6 @@ function setSpisok(n)
 
 function getDataTable()
  {
- tbl.rows[3].cells[2].innerHTML=tbl.rows[3].cells[2].innerHTML+'<div id="predm">Эконометрика</div>';
- tbl.rows[3].cells[3].innerHTML=tbl.rows[3].cells[3].innerHTML+'<div id="prep">Кокорина Е.Е.</div>';
-rows=0; Data='21.01.2017';
- tbl.rows[3].cells[4].innerHTML=tbl.rows[3].cells[4].innerHTML+'<div id="aud mmedia" class="aud mmedia">659м/м</div>';
  }
 
 function otcPrep(num,typ) 
