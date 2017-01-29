@@ -20,19 +20,23 @@ now = datetime.datetime.now()
 
 def updateTimeTable(groupName):
 	param = urllib.quote_plus(groupName.encode('cp1251'))
-	r = requests.get("http://webrasp.usue.ru/rsp/RaspMain?DATN=" + 
-					(now).strftime("%d.%m.%Y") + 
-					"&DATK=" + (now + datetime.timedelta(days=1)).strftime("%d.%m.%Y") + 
-					"&RASP=1&NAMGRP=" + param)
 
-	r.encoding = "cp1251"
+	try:
+		r = requests.get("http://webrasp.usue.ru/rsp/RaspMain?DATN=" + 
+						(now).strftime("%d.%m.%Y") + 
+						"&DATK=" + (now + datetime.timedelta(days=1)).strftime("%d.%m.%Y") + 
+						"&RASP=1&NAMGRP=" + param)
 
-	data = r.text.decode("utf-8", "replace")
+		r.encoding = "cp1251"
 
-	f = open('data.txt', mode='w')
-	f.write(data)
-	f.close()
+		data = r.text.decode("utf-8", "replace")
 
+		f = open('data.txt', mode='w')
+		f.write(data)
+		f.close()
+	except ChunkedEncodingError as e:
+		return False
+	
 	today = [[u"null",u"null",u"null",]] * 8
 	tomorrow = [[u"null",u"null",u"null",]] * 8
 
@@ -117,6 +121,7 @@ def updateTimeTable(groupName):
 				i = newi
 	db_manager.saveGroup(groupName, today, tomorrow)
 	print "Saved", groupName.decode("utf-8")
+	return True
 
 def updateAllTimeTable():
 	flag = True
@@ -133,7 +138,10 @@ def updateAllTimeTable():
 					if line == u"БД-13-2":
 						flag = True
 					continue
-				updateTimeTable(line)
+				ready = False
+				while not ready:
+					ready = updateTimeTable(line)
+
 				time.sleep(10)
 			fileGroups.close()
 
