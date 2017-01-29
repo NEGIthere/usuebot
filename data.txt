@@ -16,14 +16,14 @@
 <td colspan=2 align='center' valign='center' style='color:White'><H1><font size=+3><b>Расписание</b><sup><font size=-1></H1>
 <td align='right'><img src='http://webrasp.usue.ru/rsp/Images/logo.png'>
 <form id='frm1' method='post' action='http://webrasp.usue.ru/rsp/RaspMain'>
-<tr class='datesearchform' id='datesearchform'><td colspan=4 align='left'>C <input type='text' id='DATN' name='DATN' value='21.01.2017' onfocus='this.select();lcs(this)' onclick='event.cancelBubble=true;this.select();lcs(this)'>по <input type='text' id='DATK' name='DATK' value='22.01.2017' onfocus='this.select();lcs(this)' onclick='event.cancelBubble=true;this.select();lcs(this)'><tr class='paramform' id='paramform'><td colspan=4>
+<tr class='datesearchform' id='datesearchform'><td colspan=4 align='left'>C <input type='text' id='DATN' name='DATN' value='29.01.2017' onfocus='this.select();lcs(this)' onclick='event.cancelBubble=true;this.select();lcs(this)'>по <input type='text' id='DATK' name='DATK' value='30.01.2017' onfocus='this.select();lcs(this)' onclick='event.cancelBubble=true;this.select();lcs(this)'><tr class='paramform' id='paramform'><td colspan=4>
 Вид <select name='RASP' onChange='setSpisok(0)'>  <option value=1 selected>Группы</option>
   <option value=2>Преподаватели</option>
  </select>
- Группа: <input type='text' id='searchClient' autocomplete='off' name='NAMGRP' value='ТПОП-14 (2 п/г)'><input type='button' value='Показать расписание' onClick='setSpisok(1)'><div class='mainZag'></div><div class='data_today'>21.01.2017</div><div class='container' id='container'>
+ Группа: <input type='text' id='searchClient' autocomplete='off' name='NAMGRP' value='БИ-15'><input type='button' value='Показать расписание' onClick='setSpisok(1)'><div class='mainZag'></div><div class='data_today'>29.01.2017</div><div class='container' id='container'>
 <div class='data' id='Data'>
 <table id='main' class='main'><tr class='zag'><td>Пара<td>Время
-<td>Предмет<td>Преподаватель<td>Аудитория<tr class='tek'><td colspan=5><div class='date'>21.01.2017</div>-<div class='day'>Суббота</div><tr><td>1<td>8.30-10.00<td><td><td><tr><td>2<td>10.10-11.40<td><td><td><tr><td>3<td>11.50-13.20<td><td><td><tr><td>4<td>13.50-15.20<td><td><td><tr><td>5<td>15.30-17.00<td><td><td><tr><td>6<td>17.10-18.40<td><td><td><tr><td>7<td>18.50-20.20<td><td><td><tr><td>8<td>20.30-22.00<td><td><td><tr><td colspan=5><div class='date'>22.01.2017</div>-<div class='day'>Воскресенье</div><tr><td>1<td>8.30-10.00<td><td><td><tr><td>2<td>10.10-11.40<td><td><td><tr><td>3<td>11.50-13.20<td><td><td><tr><td>4<td>13.50-15.20<td><td><td><tr><td>5<td>15.30-17.00<td><td><td><tr><td>6<td>17.10-18.40<td><td><td><tr><td>7<td>18.50-20.20<td><td><td><tr><td>8<td>20.30-22.00<td><td><td></table>
+<td>Предмет<td>Преподаватель<td>Аудитория<tr class='tek'><td colspan=5><div class='date'>29.01.2017</div>-<div class='day'>Воскресенье</div><tr><td>1<td>8.30-10.00<td><td><td><tr><td>2<td>10.10-11.40<td><td><td><tr><td>3<td>11.50-13.20<td><td><td><tr><td>4<td>13.50-15.20<td><td><td><tr><td>5<td>15.30-17.00<td><td><td><tr><td>6<td>17.10-18.40<td><td><td><tr><td>7<td>18.50-20.20<td><td><td><tr class='tek'><td>8<td>20.30-22.00<td><td><td><tr><td colspan=5><div class='date'>30.01.2017</div>-<div class='day'>Понедельник</div><tr><td>1<td>8.30-10.00<td><td><td><tr><td>2<td>10.10-11.40<td><td><td><tr><td>3<td>11.50-13.20<td><td><td><tr><td>4<td>13.50-15.20<td><td><td><tr><td>5<td>15.30-17.00<td><td><td><tr><td>6<td>17.10-18.40<td><td><td><tr><td>7<td>18.50-20.20<td><td><td><tr><td>8<td>20.30-22.00<td><td><td></table>
 </div>
 <div class='column-headers' id='ColumnHeaders'>
 <table id='colTable' width='100%' height='100%' class='main' cellspacing='0' cellpadding='0'>
@@ -53,19 +53,24 @@ function setSpisok(n)
 
 function getDataTable()
  {
- tbl.rows[5].cells[2].innerHTML=tbl.rows[5].cells[2].innerHTML+'<div id="predm">Ин. яз. проф.общ</div>';
- tbl.rows[5].cells[3].innerHTML=tbl.rows[5].cells[3].innerHTML+'<div id="prep">0</div>';
-rows=0; Data='21.01.2017';
- tbl.rows[5].cells[4].innerHTML=tbl.rows[5].cells[4].innerHTML+'<div id="aud rezerv" class="aud rezerv">0</div>';
- tbl.rows[6].cells[2].innerHTML=tbl.rows[6].cells[2].innerHTML+'<div id="predm">Ин. яз. проф.общ</div>';
- tbl.rows[6].cells[3].innerHTML=tbl.rows[6].cells[3].innerHTML+'<div id="prep">0</div>';
-rows=0; Data='21.01.2017';
- tbl.rows[6].cells[4].innerHTML=tbl.rows[6].cells[4].innerHTML+'<div id="aud rezerv" class="aud rezerv">0</div>';
+ tbl.rows[12].cells[2].innerHTML=tbl.rows[12].cells[2].innerHTML+'<div id="predm">Иностр. язык</div>';
+ tbl.rows[12].cells[3].innerHTML=tbl.rows[12].cells[3].innerHTML+'<div id="prep">0</div>';
+rows=1; Data='30.01.2017';
+ tbl.rows[12].cells[4].innerHTML=tbl.rows[12].cells[4].innerHTML+'<div id="aud rezerv" class="aud rezerv">0</div>';
+ tbl.rows[13].cells[1].innerHTML='11.50-13.20';
+ tbl.rows[13].cells[2].innerHTML=tbl.rows[13].cells[2].innerHTML+'<div id="predm">Экономика организации</div>';
+ tbl.rows[13].cells[3].innerHTML=tbl.rows[13].cells[3].innerHTML+'<div id="prep">Кудин Л.Ш.</div>';
+rows=1; Data='30.01.2017';
+ tbl.rows[13].cells[4].innerHTML=tbl.rows[13].cells[4].innerHTML+'<div id="aud mmedia" class="aud mmedia">757 м/м</div>';
+ tbl.rows[14].cells[2].innerHTML=tbl.rows[14].cells[2].innerHTML+'<div id="predm">Общая теория систем</div>';
+ tbl.rows[14].cells[3].innerHTML=tbl.rows[14].cells[3].innerHTML+'<div id="prep">Сазанова Л.А.</div>';
+rows=1; Data='30.01.2017';
+ tbl.rows[14].cells[4].innerHTML=tbl.rows[14].cells[4].innerHTML+'<div id="aud mmedia" class="aud mmedia">760  м/м</div>';
  }
 
 function otcPrep(num,typ) 
  { 
-  if( typ == 2 ){src='http://webrasp.usue.ru/rsp/RaspVipisPrep?DTN=21.01.2017&DTK=22.01.2017&PREP='+num;}
+  if( typ == 2 ){src='http://webrasp.usue.ru/rsp/RaspVipisPrep?DTN=29.01.2017&DTK=30.01.2017&PREP='+num;}
   var params = 'menubar=yes,location=yes,resizable=yes,scrollbars=yes,status=yes';
   window.open(src, 'VIP', params);
   } 

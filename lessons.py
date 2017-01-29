@@ -8,11 +8,6 @@ import datetime
 import db_manager
 import time
 
-reload(sys)
-sys.setdefaultencoding('utf8')
-
-db_manager.init()
-
 daysOfWeek =  { "Monday":u"Понедельник", 
 				"Tuesday":u"Вторник", 
 				"Wednesday":u"Среда", 
@@ -123,22 +118,29 @@ def updateTimeTable(groupName):
 	db_manager.saveGroup(groupName, today, tomorrow)
 	print "Saved", groupName.decode("utf-8")
 
-flag = True
+def updateAllTimeTable():
+	flag = True
 
-if len(sys.argv) > 1:	
-	group = (sys.argv[1].decode(sys.getfilesystemencoding()))
-	updateTimeTable(group)
-else:
-	with open('groups_active.txt', mode='r') as fileGroups:
-		lines = fileGroups.readlines()
-		for line in lines:
-			line = line.strip()
-			if flag == False:
-				if line == u"БД-13-2":
-					flag = True
-				continue
-			updateTimeTable(line)
-			time.sleep(10)
-		fileGroups.close()
+	if len(sys.argv) > 1:	
+		group = (sys.argv[1].decode(sys.getfilesystemencoding()))
+		updateTimeTable(group)
+	else:
+		with open('groups_active.txt', mode='r') as fileGroups:
+			lines = fileGroups.readlines()
+			for line in lines:
+				line = line.strip()
+				if flag == False:
+					if line == u"БД-13-2":
+						flag = True
+					continue
+				updateTimeTable(line)
+				time.sleep(10)
+			fileGroups.close()
 
-db_manager.close()
+	db_manager.close()
+
+if __name__ == "__main__":
+	reload(sys)
+	sys.setdefaultencoding('utf8')
+	db_manager.init()
+	updateAllTimeTable();

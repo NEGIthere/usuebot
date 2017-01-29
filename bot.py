@@ -2,17 +2,22 @@
 
 from telegram import (ReplyKeyboardMarkup, ReplyKeyboardHide)
 from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, RegexHandler, ConversationHandler)
-from apscheduler.schedulers.blocking import BlockingScheduler
+from apscheduler.schedulers.background import BackgroundScheduler
+import sys
 import logging
 import datetime
 import db_manager
+import lessons
+
+reload(sys)
+sys.setdefaultencoding('utf8')
+
+scheduler = BackgroundScheduler()
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
 
 logger = logging.getLogger(__name__)
-
-sched = BlockingScheduler()
 
 INSTITUTE, CATHEDRA, DIRECTION, GROUP = range(4)
 
@@ -353,9 +358,9 @@ def sendTimetable(name, update):
 
     tomorrow = (now + datetime.timedelta(days=1))
 
-    timtableText =  "Расписание для " + name + ('\nНа сегодня (%s, %s):\n' % (daysOfWeek[now.strftime("%A")], now.strftime("%d.%m.%Y"))) + createTimetableText(tt[0]) + 'На завтра (%s, %s):\n' % (daysOfWeek[tomorrow.strftime("%A")], tomorrow.strftime("%d.%m.%Y")) + createTimetableText(tt[1])
+    timtableText = "Расписание для _" + name + ('_\n*На сегодня* (%s, %s):\n' % (daysOfWeek[now.strftime("%A")], now.strftime("%d.%m.%Y"))) + createTimetableText(tt[0]) + '*На завтра* (%s, %s):\n' % (daysOfWeek[tomorrow.strftime("%A")], tomorrow.strftime("%d.%m.%Y")) + createTimetableText(tt[1])
             
-    update.message.reply_text(timtableText)
+    update.message.reply_text(timtableText, parse_mode="Markdown")
     return
 
 def createTimetableText(table):
@@ -430,6 +435,12 @@ def error(bot, update, error):
 
 def main():
     db_manager.init()
+    logger.info(daysOfWeek["Monday"])
+
+    job = scheduler.add_job(lessons.updateAllTimeTable, 'interval', hours=12)
+    scheduler.start()
+
+    #lessons.updateAllTimeTable()
 
     logger.info("yolo")
 
