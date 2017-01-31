@@ -247,17 +247,31 @@ subjects = {
 
 def start(bot, update, user_data):
     reply_keyboard = list([x] for x in subjects.keys())
-    reply_keyboard.insert(0, ["Назад".decode("utf-8")])
+    reply_keyboard.insert(0, ["🕗 Расписание по последней выбранной группе".decode("utf-8")])
 
     update.message.reply_text(
         'Выберите институт.',
         reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=False))
+
+    group = db_manager.getGroup(update.message.from_user.id)
+
+    if group:
+        user_data["group"] = group
+
+    return INSTITUTE
+
+def send_last_timetable(bot, update, user_data):
+    if "group" in user_data:
+        sendTimetable(user_data["group"], update)
+    else:
+        update.message.reply_text('Выберите институт.')
     return INSTITUTE
 
 def institute_choice(bot, update, user_data):
     user = update.message.from_user
-    #logger.info("Gender of %s: %s" % (user.first_name, update.message.text))
+
     msg = update.message.text.encode("utf-8")
+
     user_data["institute"] = msg
 
     if user_data["institute"] == "Институт непрерывного образования":
@@ -361,6 +375,9 @@ def sendTimetable(name, update):
     timtableText = "Расписание для _" + name + ('_\n*На сегодня* (%s, %s):\n' % (daysOfWeek[now.strftime("%A")], now.strftime("%d.%m.%Y"))) + createTimetableText(tt[0]) + '*На завтра* (%s, %s):\n' % (daysOfWeek[tomorrow.strftime("%A")], tomorrow.strftime("%d.%m.%Y")) + createTimetableText(tt[1])
             
     update.message.reply_text(timtableText, parse_mode="Markdown")
+    
+    db_manager.saveGroup(update.message.from_user.id, name)
+
     return
 
 def createTimetableText(table):
@@ -377,7 +394,7 @@ def createTimetableText(table):
 
 def back_cathedra(bot, update, user_data):
     reply_keyboard = list([x] for x in subjects.keys())
-    reply_keyboard.insert(0, ["Назад".decode("utf-8")])
+    reply_keyboard.insert(0, ["🕗 Расписание по последней выбранной группе".decode("utf-8")])
 
     update.message.reply_text(
         'Выберите институт.',
@@ -415,7 +432,7 @@ def back_group(bot, update, user_data):
 def cancel(bot, update):
     user = update.message.from_user
     logger.info("User %s canceled the conversation." % user.first_name)
-    update.message.reply_text('Bye! I hope we can talk again some day.',
+    update.message.reply_text('До свидания!',
                               reply_markup=ReplyKeyboardHide())
 
     return ConversationHandler.END
@@ -446,6 +463,7 @@ def main():
 
     institutesRegex = ('^(' + '|'.join(str(x) for x in subjects.keys()) + ')$').decode("utf-8")
     backRegex = '^(Назад)$'.decode("utf-8")
+    lastTimetableRegex = "^(🕗 Расписание по последней выбранной группе)$".decode("utf-8");
 
     updater = Updater("315708415:AAFyAAFCl_IHd19hJbqWxaB65UNilzJsCX4")
 
@@ -459,6 +477,7 @@ def main():
 
         states = {
             INSTITUTE: [
+                RegexHandler(lastTimetableRegex, send_last_timetable, pass_user_data=True),
                 RegexHandler(institutesRegex, institute_choice, pass_user_data=True)
             ],
             CATHEDRA: [

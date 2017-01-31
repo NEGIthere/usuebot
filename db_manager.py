@@ -28,6 +28,27 @@ def init():
 		print e.pgerror
 	return
 
+def saveGroup(id, name):
+	#if name in groupNames:
+	try:
+		cur.execute("UPDATE users SET group_name = %s WHERE id = %s; INSERT INTO users (id, group_name) SELECT %s, %s WHERE NOT EXISTS (SELECT 1 FROM users WHERE id = %s)", (name, id, id, name, id))
+		conn.commit()
+		return True
+	except psycopg2.Error as e:
+		print e.pgerror
+		return False
+	return True
+
+def getGroup(id):
+	try:
+		cur.execute("SELECT group_name FROM users WHERE id = %s LIMIT 1", (id,))
+		result = cur.fetchone()
+		return result[0]
+	except psycopg2.Error as e:
+		print e.pgerror
+		return None
+	return None
+
 def getTimetable(name):
 	if name in groupNames:
 		try:
@@ -39,7 +60,7 @@ def getTimetable(name):
 			return []
 	return []
 
-def saveGroup(name, today, tomorrow):
+def saveTimetable(name, today, tomorrow):
 	try:
 		#cur.execute("CREATE TABLE timetable (group_name varchar PRIMARY KEY, last_update date, today text[][], tomorrow text[][]) ENCODING='UTF8';")
 		if name in groupNames:

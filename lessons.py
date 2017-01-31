@@ -40,8 +40,8 @@ def updateTimeTable(groupName):
 	tomorrow = [[u"null",u"null",u"null",]] * 8
 
 	if data.find("getDataTable()\n {\n }") > 0:
-		print u"Нет расписания для", groupName.decode("utf-8")
-		db_manager.saveGroup(groupName, today, tomorrow)
+		print u"No timetable for", groupName.decode("utf-8")
+		db_manager.saveTimetable(groupName, today, tomorrow)
 		return True
 
 	i0 = data.find("ion getDataTable()\n {", 30000) + 22
@@ -120,7 +120,7 @@ def updateTimeTable(groupName):
 				aud = m.group(2)
 	if not parsingTomorrow and date.day != now.day:
 		today, tomorrow = tomorrow, today
-	db_manager.saveGroup(groupName, today, tomorrow)
+	db_manager.saveTimetable(groupName, today, tomorrow)
 	print "Saved", groupName.decode("utf-8")
 	return True
 
