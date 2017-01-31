@@ -370,7 +370,7 @@ def createTimetableText(table):
         n = n + 1
         if l[0] == "null":
             continue
-        timtableText = timtableText + ("  %d. %s - %s, %s, %s\n" % (n + 1, lessonsTime[n], l[0], l[1], l[2]))
+        timtableText = timtableText + ("  %d. %s - %s, %s, %s\n" % (n, lessonsTime[n], l[0], l[1], l[2]))
     if timtableText == "":
         return "  Неучебный день\n"
     return timtableText

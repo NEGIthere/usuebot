@@ -50,6 +50,7 @@ def updateTimeTable(groupName):
 	data = data[:i1]
 
 	i, j = 0, 0
+	newi = 0
 	first = True
 	firstDate = True
 
@@ -67,8 +68,8 @@ def updateTimeTable(groupName):
 		arr[ind] = line
 
 		if line.startswith("rows"):
-			arr[ind], arr[ind-2] = arr[ind-2].strip(), arr[ind]
-			ind = ind + 1
+			arr[ind], arr[ind+1] = arr[ind+1].strip(), arr[ind]
+			ind = ind + 2
 			continue
 		ind = ind + 1
 
@@ -79,7 +80,9 @@ def updateTimeTable(groupName):
 			dstr = m.group(1)
 			
 			date = datetime.datetime.strptime(dstr, '%d.%m.%Y')
+
 			
+
 			if firstDate:
 				firstDate = False
 			else:
@@ -87,10 +90,20 @@ def updateTimeTable(groupName):
 					parsingTomorrow = True
 
 			dateNew = date
+
+			print daysOfWeek[date.strftime("%A")] + ": " + subj + ", " + master  + ", " + aud
+
+			ind = int((i - 1) % 9.0 - 1)
+			print ind
+			if parsingTomorrow:
+				tomorrow[ind] = [subj, master, aud]
+			else:
+				today[ind] = [subj, master, aud]
+
 			continue
 		else:
 			m = re.search('rows\[(\d+)\]', line)
-			newi = int(m.group(1))
+			i = int(m.group(1))
 			m = re.search('cells\[(\d+)\]', line)
 			newj = int(m.group(1))
 			j = newj
@@ -105,22 +118,8 @@ def updateTimeTable(groupName):
 			elif j == 4:
 				m = re.search("aud (\w+)\">(.+)<", line)
 				aud = m.group(2)
-
-			if newi != i or index == (len(arr) - 1):
-				if first:
-					first = False
-				else:
-					if parsingTomorrow:
-						tomorrow[int((i - 1) % 9.0 - 1)] = [subj, master, aud]
-						if len(tomorrow) == 8:
-							break
-					else:
-						today[int((i - 1) % 9.0 - 1)] = [subj, master, aud]
-
-					print daysOfWeek[date.strftime("%A")] + ": " + subj + ", " + master  + ", " + aud
-				i = newi
-
-	if not parsingTomorrow and date.day > now.day:
+		print line
+	if not parsingTomorrow and date.day != now.day:
 		today, tomorrow = tomorrow, today
 	db_manager.saveGroup(groupName, today, tomorrow)
 	print "Saved", groupName.decode("utf-8")
