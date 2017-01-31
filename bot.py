@@ -479,7 +479,7 @@ def main():
             CommandHandler('cancel', cancel)
         ],
 
-        allow_reentry = True
+        allow_reentry = False
     )
 
     dp.add_handler(conv_handler)
