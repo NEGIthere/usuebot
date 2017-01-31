@@ -91,10 +91,10 @@ def updateTimeTable(groupName):
 
 			dateNew = date
 
-			print daysOfWeek[date.strftime("%A")] + ": " + subj + ", " + master  + ", " + aud
+			#print daysOfWeek[date.strftime("%A")] + ": " + subj + ", " + master  + ", " + aud
 
 			ind = int((i - 1) % 9.0 - 1)
-			print ind
+
 			if parsingTomorrow:
 				tomorrow[ind] = [subj, master, aud]
 			else:
@@ -118,7 +118,6 @@ def updateTimeTable(groupName):
 			elif j == 4:
 				m = re.search("aud (\w+)\">(.+)<", line)
 				aud = m.group(2)
-		print line
 	if not parsingTomorrow and date.day != now.day:
 		today, tomorrow = tomorrow, today
 	db_manager.saveGroup(groupName, today, tomorrow)
