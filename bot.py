@@ -454,7 +454,7 @@ def main():
     conv_handler = ConversationHandler(
         entry_points = [
             CommandHandler('start', start, pass_user_data=True),
-            MessageHandler(Filters.text, start)
+            MessageHandler(Filters.text, start, pass_user_data=True)
         ],
 
         states = {
