@@ -452,7 +452,10 @@ def main():
     dp = updater.dispatcher
 
     conv_handler = ConversationHandler(
-        entry_points = [CommandHandler('start', start, pass_user_data=True)],
+        entry_points = [
+            CommandHandler('start', start, pass_user_data=True),
+            MessageHandler(Filters.text, start)
+        ],
 
         states = {
             INSTITUTE: [
