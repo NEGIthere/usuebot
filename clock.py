@@ -15,7 +15,7 @@ scheduler = BackgroundScheduler()
 @scheduler.scheduled_job('interval', minutes=1)
 def timed_job():
 	logger.info("Updating")
-    lessons.updateAllTimeTable()
+	lessons.updateAllTimeTable()
 
 
 db_manager.init()
