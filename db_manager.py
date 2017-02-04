@@ -3,6 +3,7 @@
 import psycopg2
 import datetime
 import sys
+import time
 
 conn = psycopg2.connect(
 	dbname="djcn1g0nujems", 
@@ -52,9 +53,20 @@ def getGroup(id):
 def getTimetable(name):
 	#if name in groupNames:
 	try:
-		cur.execute("SELECT today, tomorrow FROM timetable WHERE group_name = %s AND last_update = %s LIMIT 1", (name, datetime.datetime.now().strftime("%Y.%m.%d")))
+		dt = datetime.datetime.now()
+		if time.localtime().tm_isdst == 0:
+			offset = time.timezone
+		else:
+			offset = time.altzone
+		offset = offset / 60 / 60 * -1
+
+		if offset == 0:
+			dt = dt + datetime.timedelta(hours=5)
+
+		cur.execute("SELECT today, tomorrow FROM timetable WHERE group_name = %s AND last_update = %s LIMIT 1", (name, dt.strftime("%Y.%m.%d")))
 		result = cur.fetchone()
-		print result
+		
+		print result, offset, time.tzname, time.gmtime(), datetime.datetime.now().strftime("%Y.%m.%d")
 		return result
 	except psycopg2.Error as e:
 		print e.pgerror
