@@ -51,8 +51,31 @@ def getGroup(id):
 	return None
 
 def getTimetable(name):
-	#if name in groupNames:
+	if name in groupNames:
+		try:
+			dt = datetime.datetime.now()
+			if time.localtime().tm_isdst == 0:
+				offset = time.timezone
+			else:
+				offset = time.altzone
+			offset = offset / 60 / 60 * -1
+
+			if offset == 0:
+				dt = dt + datetime.timedelta(hours=5)
+
+			cur.execute("SELECT today, tomorrow FROM timetable WHERE group_name = %s AND last_update = %s LIMIT 1", (name, dt.strftime("%Y.%m.%d")))
+			result = cur.fetchone()
+			
+			# print result, offset, time.tzname, time.gmtime(), datetime.datetime.now().strftime("%Y.%m.%d")
+			return result
+		except psycopg2.Error as e:
+			print e.pgerror
+			return []
+		return []
+
+def saveTimetable(name, today, tomorrow):
 	try:
+		#cur.execute("CREATE TABLE timetable (group_name varchar PRIMARY KEY, last_update date, today text[][], tomorrow text[][]) ENCODING='UTF8';")
 		dt = datetime.datetime.now()
 		if time.localtime().tm_isdst == 0:
 			offset = time.timezone
@@ -63,23 +86,10 @@ def getTimetable(name):
 		if offset == 0:
 			dt = dt + datetime.timedelta(hours=5)
 
-		cur.execute("SELECT today, tomorrow FROM timetable WHERE group_name = %s AND last_update = %s LIMIT 1", (name, dt.strftime("%Y.%m.%d")))
-		result = cur.fetchone()
-		
-		print result, offset, time.tzname, time.gmtime(), datetime.datetime.now().strftime("%Y.%m.%d")
-		return result
-	except psycopg2.Error as e:
-		print e.pgerror
-		return []
-	return []
-
-def saveTimetable(name, today, tomorrow):
-	try:
-		#cur.execute("CREATE TABLE timetable (group_name varchar PRIMARY KEY, last_update date, today text[][], tomorrow text[][]) ENCODING='UTF8';")
 		if name in groupNames:
-			cur.execute("UPDATE timetable SET (last_update, today, tomorrow) = (%s, %s, %s) WHERE group_name = %s", (datetime.datetime.now(), today, tomorrow, name))
+			cur.execute("UPDATE timetable SET (last_update, today, tomorrow) = (%s, %s, %s) WHERE group_name = %s", (dt, today, tomorrow, name))
 		else:
-			cur.execute("INSERT INTO timetable (group_name, last_update, today, tomorrow) VALUES (%s, %s, %s, %s)", (name, datetime.datetime.now(), today, tomorrow))
+			cur.execute("INSERT INTO timetable (group_name, last_update, today, tomorrow) VALUES (%s, %s, %s, %s)", (name, dt, today, tomorrow))
 		
 		#cur.execute("SELECT * FROM timetable;")
 		#result = cur.fetchall()
