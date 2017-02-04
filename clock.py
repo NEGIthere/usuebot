@@ -21,9 +21,9 @@ def timed_job():
 db_manager.init()
 
 def doUpdate():
-	lessons.updateAllTimeTable()
 	logger.info("Updating")
+	lessons.updateAllTimeTable()
 	return
-job = scheduler.add_job(, 'interval', minutes=1) # lessons.updateAllTimeTable
+job = scheduler.add_job(doUpdate, 'interval', minutes=1) # lessons.updateAllTimeTable
 
 sched.start()
