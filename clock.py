@@ -9,10 +9,10 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 
 logger = logging.getLogger(__name__)
 
-#sched = BlockingScheduler()
-sched = BackgroundScheduler()
+#scheduler = BlockingScheduler()
+scheduler = BackgroundScheduler()
 '''
-@sched.scheduled_job('interval', minutes=3)
+@scheduler.scheduled_job('interval', minutes=3)
 def timed_job():
     print('This job is run every three minutes.')
     lessons.updateAllTimeTable()
@@ -26,4 +26,4 @@ def doUpdate():
 	return
 job = scheduler.add_job(doUpdate, 'interval', minutes=1) # lessons.updateAllTimeTable
 
-sched.start()
+scheduler.start()
