@@ -450,11 +450,15 @@ def error(bot, update, error):
     logger.warn('Update "%s" caused error "%s"' % (update, error))
 
 
+def prt():
+    logger.info("Hello?")
+    return
+
 def main():
     db_manager.init()
     logger.info(daysOfWeek["Monday"])
 
-    job = scheduler.add_job(lessons.updateAllTimeTable, 'interval', hours=3)
+    job = scheduler.add_job(prt, 'interval', minutes=1) # lessons.updateAllTimeTable
     scheduler.start()
 
     #lessons.updateAllTimeTable()
