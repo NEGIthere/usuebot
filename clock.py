@@ -11,19 +11,19 @@ logger = logging.getLogger(__name__)
 
 #scheduler = BlockingScheduler()
 scheduler = BackgroundScheduler()
-'''
-@scheduler.scheduled_job('interval', minutes=3)
+
+@scheduler.scheduled_job('interval', minutes=1)
 def timed_job():
-    print('This job is run every three minutes.')
+	logger.info("Updating")
     lessons.updateAllTimeTable()
-'''
+
 
 db_manager.init()
-
+'''
 def doUpdate():
 	logger.info("Updating")
 	lessons.updateAllTimeTable()
 	return
 job = scheduler.add_job(doUpdate, 'interval', minutes=1) # lessons.updateAllTimeTable
-
+'''
 scheduler.start()
