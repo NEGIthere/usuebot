@@ -458,7 +458,7 @@ def main():
     db_manager.init()
     logger.info(daysOfWeek["Monday"])
 
-    job = scheduler.add_job(prt, 'interval', minutes=1) # lessons.updateAllTimeTable
+    job = scheduler.add_job(lessons.updateAllTimeTable, 'interval', minutes=5) # lessons.updateAllTimeTable
     scheduler.start()
 
     #lessons.updateAllTimeTable()
