@@ -2,7 +2,7 @@
 
 from telegram import (ReplyKeyboardMarkup, ReplyKeyboardHide)
 from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, RegexHandler, ConversationHandler)
-from apscheduler.schedulers.background import BackgroundScheduler
+
 import sys
 import logging
 import datetime
@@ -12,7 +12,7 @@ import lessons
 reload(sys)
 sys.setdefaultencoding('utf8')
 
-scheduler = BackgroundScheduler()
+#scheduler = BackgroundScheduler()
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
