@@ -6,6 +6,7 @@ from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, Rege
 import sys
 import logging
 import datetime
+import time
 import db_manager
 import lessons
 
@@ -359,7 +360,6 @@ def group_choice(bot, update, user_data):
     return GROUP
 
 def sendTimetable(name, update):
-    now = datetime.datetime.now()
     tt = db_manager.getTimetable(name)
 
     if tt is None or len(tt) == 0:
@@ -367,6 +367,17 @@ def sendTimetable(name, update):
         return GROUP
 
     assert(len(tt) == 2)
+
+    now = datetime.datetime.now()
+
+    if time.localtime().tm_isdst == 0:
+        offset = time.timezone
+    else:
+        offset = time.altzone
+    offset = offset / 60 / 60 * -1
+
+    if offset == 0:
+        now = now + datetime.timedelta(hours=5)
 
     tomorrow = (now + datetime.timedelta(days=1))
 
