@@ -91,7 +91,7 @@ def updateTimeTable(groupName):
 
 			dateNew = date
 
-			#print daysOfWeek[date.strftime("%A")] + ": " + subj + ", " + master  + ", " + aud
+			print daysOfWeek[date.strftime("%A")] + ": " + subj + ", " + master  + ", " + aud
 
 			ind = int((i - 1) % 9.0 - 1)
 

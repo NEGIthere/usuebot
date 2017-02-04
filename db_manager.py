@@ -50,14 +50,15 @@ def getGroup(id):
 	return None
 
 def getTimetable(name):
-	if name in groupNames:
-		try:
-			cur.execute("SELECT today, tomorrow FROM timetable WHERE group_name = %s AND last_update = %s LIMIT 1", (name, datetime.datetime.now().strftime("%Y.%m.%d")))
-			result = cur.fetchone()
-			return result
-		except psycopg2.Error as e:
-			print e.pgerror
-			return []
+	#if name in groupNames:
+	try:
+		cur.execute("SELECT today, tomorrow FROM timetable WHERE group_name = %s AND last_update = %s LIMIT 1", (name, datetime.datetime.now().strftime("%Y.%m.%d")))
+		result = cur.fetchone()
+		print result
+		return result
+	except psycopg2.Error as e:
+		print e.pgerror
+		return []
 	return []
 
 def saveTimetable(name, today, tomorrow):
