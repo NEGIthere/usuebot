@@ -12,8 +12,6 @@ import lessons
 reload(sys)
 sys.setdefaultencoding('utf8')
 
-#scheduler = BackgroundScheduler()
-
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
 
@@ -462,8 +460,6 @@ def main():
 
     #lessons.updateAllTimeTable()
 
-    logger.info("yolo")
-
     institutesRegex = ('^(' + '|'.join(str(x) for x in subjects.keys()) + ')$').decode("utf-8")
     backRegex = '^(Назад)$'.decode("utf-8")
     lastTimetableRegex = "^(🕗 Расписание по последней выбранной группе)$".decode("utf-8");
@@ -510,7 +506,8 @@ def main():
     dp.add_error_handler(error)
 
     updater.start_polling()
-
+    
+    logger.info("Started")
     updater.idle()
 
 if __name__ == '__main__':

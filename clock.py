@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 #scheduler = BlockingScheduler()
 scheduler = BackgroundScheduler()
 
-@scheduler.scheduled_job('interval', minutes=1)
+@scheduler.scheduled_job('interval', hours=3)
 def timed_job():
 	logger.info("Updating")
 	lessons.updateAllTimeTable()
